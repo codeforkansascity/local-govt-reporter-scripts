@@ -16,3 +16,4 @@ C:\Users\SteveBosilovatz\source\repos\LocalGovtReporter\LocalGovtReporter\bin\De
 C:\Users\SteveBosilovatz\source\repos\LocalGovtReporter\LocalGovtReporter\bin\Debug\netcoreapp3.1\AWSSDK.Core.dll
 C:\Users\SteveBosilovatz\source\repos\LocalGovtReporter\LocalGovtReporter\bin\Debug\netcoreapp3.1\AWSSDK.DynamoDBv2.dll
 C:\Users\SteveBosilovatz\source\repos\LocalGovtReporter\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.csprojAssemblyReference.cache
+C:\Users\SteveBosilovatz\source\repos\LocalGovtReporter\LocalGovtReporter\bin\Debug\netcoreapp3.1\WebDriver.Support.dll

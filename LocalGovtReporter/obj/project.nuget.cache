@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AnZhVh70HygbUvp0euXkMzw75VjI6mwTiZHe1L1DfuYgaWK4b5D2aCCYarxv2VQJA65SYAfWFYY3qz+QvPTf2A==",
+  "dgSpecHash": "irPzsPlySUnmCYEAiFkMyMa9SRIzUnMwJpgxULVxYO1Ips7pNK664+MAk6wBUPQqlPEMB26WS5KV0qYcErqMUw==",
   "success": true,
   "projectFilePath": "C:\\Users\\SteveBosilovatz\\source\\repos\\LocalGovtReporter\\LocalGovtReporter\\LocalGovtReporter.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,7 @@
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
+    "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\selenium.support\\3.141.0\\selenium.support.3.141.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\selenium.webdriver\\3.141.0\\selenium.webdriver.3.141.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.buffers\\4.3.0\\system.buffers.4.3.0.nupkg.sha512",

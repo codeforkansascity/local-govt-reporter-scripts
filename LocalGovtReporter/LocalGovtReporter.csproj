@@ -8,13 +8,12 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.Core" Version="3.5.1.42" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.1" />
+    <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Scripts\Kansas\County\" />
-    <Folder Include="Scripts\Missouri\City\" />
-    <Folder Include="Scripts\Missouri\County\" />
   </ItemGroup>
 
 </Project>

@@ -316,6 +316,18 @@
           }
         }
       },
+      "Selenium.Support/3.141.0": {
+        "type": "package",
+        "dependencies": {
+          "Selenium.WebDriver": "3.141.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/WebDriver.Support.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/WebDriver.Support.dll": {}
+        }
+      },
       "Selenium.WebDriver/3.141.0": {
         "type": "package",
         "dependencies": {
@@ -1882,6 +1894,25 @@
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
         "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.nuspec",
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
+      ]
+    },
+    "Selenium.Support/3.141.0": {
+      "sha512": "F4sxMCXGyqWtbw5qsniJRgza2UsBnslHwFgNA2p7hPxvJhqg73lyXu/ZscJ7FSfRvq3eJrosysv92+4sZ3vWsg==",
+      "type": "package",
+      "path": "selenium.support/3.141.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Selenium.Support.3.141.0.nupkg.sha512",
+        "Selenium.Support.nuspec",
+        "lib/net35/WebDriver.Support.dll",
+        "lib/net35/WebDriver.Support.xml",
+        "lib/net40/WebDriver.Support.dll",
+        "lib/net40/WebDriver.Support.xml",
+        "lib/net45/WebDriver.Support.dll",
+        "lib/net45/WebDriver.Support.xml",
+        "lib/netstandard2.0/WebDriver.Support.dll",
+        "lib/netstandard2.0/WebDriver.Support.xml"
       ]
     },
     "Selenium.WebDriver/3.141.0": {
@@ -5313,6 +5344,7 @@
     ".NETCoreApp,Version=v3.1": [
       "AWSSDK.Core >= 3.5.1.42",
       "AWSSDK.DynamoDBv2 >= 3.5.4.1",
+      "Selenium.Support >= 3.141.0",
       "Selenium.WebDriver >= 3.141.0"
     ]
   },
@@ -5363,6 +5395,10 @@
           "AWSSDK.DynamoDBv2": {
             "target": "Package",
             "version": "[3.5.4.1, )"
+          },
+          "Selenium.Support": {
+            "target": "Package",
+            "version": "[3.141.0, )"
           },
           "Selenium.WebDriver": {
             "target": "Package",

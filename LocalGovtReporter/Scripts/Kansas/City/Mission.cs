@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace LocalGovtReporter.Scripts
+namespace LocalGovtReporter.Scripts.Kansas.City
 {
     class Mission
     {

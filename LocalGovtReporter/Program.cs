@@ -1,4 +1,7 @@
 ﻿using LocalGovtReporter.Scripts;
+using LocalGovtReporter.Scripts.Kansas.City;
+using LocalGovtReporter.Scripts.Missouri.City;
+using LocalGovtReporter.Scripts.Missouri.County;
 using System.Threading.Tasks;
 
 namespace LocalGovtReporter
@@ -7,7 +10,7 @@ namespace LocalGovtReporter
     {
         static async Task Main(string[] args)
         {
-            await Mission.RunScriptAsync();
+            await Jackson.RunScriptAsync();
         }
     }
 }

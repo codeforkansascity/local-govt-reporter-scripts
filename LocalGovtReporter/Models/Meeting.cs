@@ -7,6 +7,8 @@ namespace LocalGovtReporter.Models
         public string MeetingID { get; set; }
         public string MeetingType { get; set; }
         public string MeetingDate { get; set; }
+        public string MeetingTime { get; set; }
+        public string MeetingLocation { get; set; }
         public string Jurisdiction { get; set; }
         public string State { get; set; }
         public string County { get; set; }
