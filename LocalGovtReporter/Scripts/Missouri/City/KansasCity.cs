@@ -1,14 +1,11 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Runtime;
+﻿using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Missouri.City
@@ -46,7 +43,8 @@ namespace LocalGovtReporter.Scripts.Missouri.City
 
                 foreach (var outputRow in outputRows)
                 {
-                    string meetingDate = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
+                    string meetingDateRaw = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
+                    string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
                     string meetingType = outputRow.FindElements(By.TagName("td"))[1].Text.Trim();
                     string meetingTime = outputRow.FindElements(By.TagName("td"))[2].Text.Trim();
                     string agendaURL = outputRow.FindElements(By.TagName("td"))[4].FindElement(By.TagName("a")).GetAttribute("href").Trim();
@@ -58,7 +56,7 @@ namespace LocalGovtReporter.Scripts.Missouri.City
 
                     meetingsList.Add(new Meeting()
                     {
-                        MeetingID = meetingType + " " + meetingDate + " KCMO",
+                        MeetingID = ("KCMO-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         MeetingTime = meetingTime,
@@ -71,30 +69,7 @@ namespace LocalGovtReporter.Scripts.Missouri.City
                 }
             }
 
-            var credentials = new BasicAWSCredentials("accessKey", "secretKey");
-
-            foreach (var meeting in meetingsList)
-            {
-                using (var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2))
-                {
-                    await client.PutItemAsync(new PutItemRequest
-                    {
-                        TableName = "Meeting",
-                        Item = new Dictionary<string, AttributeValue>()
-                        {
-                            { "MeetingID", new AttributeValue { S = meeting.MeetingID }},
-                            { "MeetingType", new AttributeValue { S = meeting.MeetingType }},
-                            { "Jurisdiction", new AttributeValue { S = meeting.Jurisdiction }},
-                            { "State", new AttributeValue { S = meeting.State }},
-                            { "County", new AttributeValue { S = meeting.County }},
-                            { "MeetingDate", new AttributeValue { S = meeting.MeetingDate }},
-                            { "MeetingTime", new AttributeValue { S = meeting.MeetingTime }},
-                            { "AgendaURL", new AttributeValue { S = meeting.AgendaURL }},
-                            { "MinutesURL", new AttributeValue { S = meeting.MinutesURL }}
-                        }
-                    });
-                }
-            }
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
 
             mainPageDriver.Quit();
         }

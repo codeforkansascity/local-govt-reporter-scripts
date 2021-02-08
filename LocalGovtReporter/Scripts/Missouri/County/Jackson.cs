@@ -1,16 +1,12 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Runtime;
+﻿using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Missouri.County
@@ -41,7 +37,8 @@ namespace LocalGovtReporter.Scripts.Missouri.County
             foreach (var tableRow in tableRows)
             {
                 string meetingType = tableRow.FindElements(By.TagName("td"))[0].Text.Trim();
-                string meetingDate = tableRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                string meetingDateRaw = tableRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
                 string meetingTime = tableRow.FindElements(By.TagName("td"))[3].Text.Trim();
                 string meetingLocation = tableRow.FindElements(By.TagName("td"))[4].Text.Trim();
                 string meetingAgenda = tableRow.FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).GetAttribute("href");
@@ -51,7 +48,7 @@ namespace LocalGovtReporter.Scripts.Missouri.County
 
                 meetingsList.Add(new Meeting()
                 {
-                    MeetingID = meetingType + " " + meetingDate + " Jackson County",
+                    MeetingID = ("Jackson-County-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
                     MeetingTime = meetingTime,
@@ -68,7 +65,8 @@ namespace LocalGovtReporter.Scripts.Missouri.County
             foreach (var tableAltRow in tableAltRows)
             {
                 string meetingType = tableAltRow.FindElements(By.TagName("td"))[0].Text.Trim();
-                string meetingDate = tableAltRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                string meetingDateRaw = tableAltRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
                 string meetingTime = tableAltRow.FindElements(By.TagName("td"))[3].Text.Trim();
                 string meetingLocation = tableAltRow.FindElements(By.TagName("td"))[4].Text.Trim();
                 string meetingAgenda = tableAltRow.FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).GetAttribute("href");
@@ -78,7 +76,7 @@ namespace LocalGovtReporter.Scripts.Missouri.County
 
                 meetingsList.Add(new Meeting()
                 {
-                    MeetingID = meetingType + " " + meetingDate + " Jackson County",
+                    MeetingID = ("Jackson-County-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
                     MeetingTime = meetingTime,
@@ -92,32 +90,7 @@ namespace LocalGovtReporter.Scripts.Missouri.County
                 });
             }
 
-            var credentials = new BasicAWSCredentials("accessKey", "secretKey");
-
-            foreach (var meeting in meetingsList)
-            {
-                using (var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2))
-                {
-                    await client.PutItemAsync(new PutItemRequest
-                    {
-                        TableName = "Meeting",
-                        Item = new Dictionary<string, AttributeValue>()
-                        {
-                            { "MeetingID", new AttributeValue { S = meeting.MeetingID }},
-                            { "MeetingType", new AttributeValue { S = meeting.MeetingType }},
-                            { "Jurisdiction", new AttributeValue { S = meeting.Jurisdiction }},
-                            { "State", new AttributeValue { S = meeting.State }},
-                            { "County", new AttributeValue { S = meeting.County }},
-                            { "MeetingLocation", new AttributeValue { S = meeting.MeetingLocation }},
-                            { "MeetingDate", new AttributeValue { S = meeting.MeetingDate }},
-                            { "MeetingTime", new AttributeValue { S = meeting.MeetingTime }},
-                            { "AgendaURL", new AttributeValue { S = meeting.AgendaURL }},
-                            { "MinutesURL", new AttributeValue { S = meeting.MinutesURL }},
-                            { "VideoURL", new AttributeValue { S = meeting.VideoURL }}
-                        }
-                    });
-                }
-            }
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
         }
 
         public static async Task RunScriptAsync()
@@ -126,14 +99,14 @@ namespace LocalGovtReporter.Scripts.Missouri.County
 
             mainPageDriver.Navigate().GoToUrl("https://jacksonco.legistar.com/Calendar.aspx");
 
-            ReadOnlyCollection<IWebElement> paginationButtons = mainPageDriver.FindElement(By.CssSelector(".rgNumPart")).FindElements(By.TagName("a"));
+            //ReadOnlyCollection<IWebElement> paginationButtons = mainPageDriver.FindElement(By.CssSelector(".rgNumPart")).FindElements(By.TagName("a"));
 
-            foreach (var paginationButton in paginationButtons)
-            {
-                paginationButton.Click();
-                Thread.Sleep(5000);
+            //foreach (var paginationButton in paginationButtons)
+            //{
+            //    paginationButton.Click();
+            //    Thread.Sleep(5000);
                 await ReadTableAsync(mainPageDriver);
-            }
+            //}
 
             mainPageDriver.Quit();
         }

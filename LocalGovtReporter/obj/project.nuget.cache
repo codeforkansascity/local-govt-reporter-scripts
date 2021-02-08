@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "irPzsPlySUnmCYEAiFkMyMa9SRIzUnMwJpgxULVxYO1Ips7pNK664+MAk6wBUPQqlPEMB26WS5KV0qYcErqMUw==",
+  "dgSpecHash": "uojYpF8TMGOWmr0Q9hHsW8ANq9vqIWl5J7dUnnBviQOWjV3QhIbARmDuSrs4FrMTsa80sQ6VdJUyyNzernpqXg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\SteveBosilovatz\\source\\repos\\LocalGovtReporter\\LocalGovtReporter\\LocalGovtReporter.csproj",
+  "projectFilePath": "C:\\Users\\SteveBosilovatz\\Desktop\\Personal\\local-govt-reporter-scripts\\LocalGovtReporter\\LocalGovtReporter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\awssdk.core\\3.5.1.42\\awssdk.core.3.5.1.42.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\awssdk.dynamodbv2\\3.5.4.1\\awssdk.dynamodbv2.3.5.4.1.nupkg.sha512",

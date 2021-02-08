@@ -5345,7 +5345,8 @@
       "AWSSDK.Core >= 3.5.1.42",
       "AWSSDK.DynamoDBv2 >= 3.5.4.1",
       "Selenium.Support >= 3.141.0",
-      "Selenium.WebDriver >= 3.141.0"
+      "Selenium.WebDriver >= 3.141.0",
+      "System.Collections >= 4.3.0"
     ]
   },
   "packageFolders": {
@@ -5354,11 +5355,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\SteveBosilovatz\\source\\repos\\LocalGovtReporter\\LocalGovtReporter\\LocalGovtReporter.csproj",
+      "projectUniqueName": "C:\\Users\\SteveBosilovatz\\Desktop\\Personal\\local-govt-reporter-scripts\\LocalGovtReporter\\LocalGovtReporter.csproj",
       "projectName": "LocalGovtReporter",
-      "projectPath": "C:\\Users\\SteveBosilovatz\\source\\repos\\LocalGovtReporter\\LocalGovtReporter\\LocalGovtReporter.csproj",
+      "projectPath": "C:\\Users\\SteveBosilovatz\\Desktop\\Personal\\local-govt-reporter-scripts\\LocalGovtReporter\\LocalGovtReporter.csproj",
       "packagesPath": "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\SteveBosilovatz\\source\\repos\\LocalGovtReporter\\LocalGovtReporter\\obj\\",
+      "outputPath": "C:\\Users\\SteveBosilovatz\\Desktop\\Personal\\local-govt-reporter-scripts\\LocalGovtReporter\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\SteveBosilovatz\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5403,6 +5404,10 @@
           "Selenium.WebDriver": {
             "target": "Package",
             "version": "[3.141.0, )"
+          },
+          "System.Collections": {
+            "target": "Package",
+            "version": "[4.3.0, )"
           }
         },
         "imports": [
@@ -5420,7 +5425,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

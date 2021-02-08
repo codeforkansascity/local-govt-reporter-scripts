@@ -1,7 +1,4 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Runtime;
+﻿using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -53,7 +50,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     if (!string.IsNullOrEmpty(date))
                     {
                         meetingType = agendaName.Replace(date, "").Trim();
-                        meetingDate = DateTime.Parse(date).ToShortDateString();
+                        meetingDate = DateTime.Parse(date).ToString("yyyy-MM-dd");
                     }
                     else
                     {
@@ -73,7 +70,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     }
 
                     meetingsList.Add(new Meeting() { 
-                        MeetingID = meetingType + " " + meetingDate + " Mission", 
+                        MeetingID = ("Mission-" + meetingDate + "-" + meetingType).Replace(" ", "-"), 
                         MeetingType = meetingType, 
                         MeetingDate = meetingDate,
                         Jurisdiction = "Mission",
@@ -87,31 +84,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                 }
             }
 
-            var credentials = new BasicAWSCredentials("accessKey", "secretKey");
-
-            foreach (var meeting in meetingsList)
-            {
-                using (var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2))
-                {
-                    await client.PutItemAsync(new PutItemRequest
-                    {
-                        TableName = "Meeting",
-                        Item = new Dictionary<string, AttributeValue>()
-                        {
-                            { "MeetingID", new AttributeValue { S = meeting.MeetingID }},
-                            { "MeetingType", new AttributeValue { S = meeting.MeetingType }},
-                            { "Jurisdiction", new AttributeValue { S = meeting.Jurisdiction }},
-                            { "State", new AttributeValue { S = meeting.State }},
-                            { "County", new AttributeValue { S = meeting.County }},
-                            { "MeetingDate", new AttributeValue { S = meeting.MeetingDate }},
-                            { "AgendaURL", new AttributeValue { S = meeting.AgendaURL }},
-                            { "PacketURL", new AttributeValue { S = meeting.PacketURL }},
-                            { "VideoURL", new AttributeValue { S = meeting.VideoURL }},
-                            { "MinutesURL", new AttributeValue { S = meeting.MinutesURL }}
-                        }
-                    });
-                }
-            }
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
 
             mainPageDriver.Quit();
             subPageDriver.Quit();

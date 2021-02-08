@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace LocalGovtReporter.Models
 {
@@ -16,5 +16,6 @@ namespace LocalGovtReporter.Models
         public string PacketURL { get; set; }
         public string MinutesURL { get; set; }
         public string VideoURL { get; set; }
+        public List<string> Tags { get; set; }
     }
 }

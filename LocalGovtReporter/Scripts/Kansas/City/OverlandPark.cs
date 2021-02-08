@@ -1,14 +1,10 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.Model;
-using Amazon.Runtime;
+﻿using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +33,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                 if (link.Text.Split(" - ").Length > 0)
                 {
                     meetingType = link.Text.Split(" - ")[0];
-                    meetingDate = DateTime.Parse(link.Text.Split(" - ")[1]).ToShortDateString();
+                    meetingDate = DateTime.Parse(link.Text.Split(" - ")[1]).ToString("yyyy-MM-dd");
                 }
 
                 subPageDriver.Navigate().GoToUrl(link.GetAttribute("href"));
@@ -48,7 +44,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                 meetingsList.Add(new Meeting()
                 {
-                    MeetingID = meetingType + " " + meetingDate + " Overland Park",
+                    MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-").Replace(",", ""),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
                     MeetingTime = meetingTime,
@@ -73,12 +69,12 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     if (link.FindElements(By.TagName("span"))[1].Text.Split(" - ").Length > 0)
                     {
                         meetingType = link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[0];
-                        meetingDate = DateTime.Parse(link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[1]).ToShortDateString();
+                        meetingDate = DateTime.Parse(link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[1]).ToString("yyyy-MM-dd");
                     }
 
                     meetingsList.Add(new Meeting()
                     {
-                        MeetingID = meetingType + " " + meetingDate + " Overland Park",
+                        MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         Jurisdiction = "Overland Park",
@@ -101,7 +97,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     if (link.Text.Split(" - ").Length > 0)
                     {
                         meetingType = link.Text.Split(" - ")[0];
-                        meetingDate = DateTime.Parse(link.Text.Split(" - ")[1]).ToShortDateString();
+                        meetingDate = DateTime.Parse(link.Text.Split(" - ")[1]).ToString("yyyy-MM-dd");
                     }
 
                     subPageDriver.Navigate().GoToUrl(link.GetAttribute("href"));
@@ -120,7 +116,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                     meetingsList.Add(new Meeting()
                     {
-                        MeetingID = meetingType + " " + meetingDate + " Overland Park",
+                        MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         MeetingTime = meetingTime,
@@ -138,7 +134,6 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                 {
 
                 }
-
             }
 
             ReadOnlyCollection<IWebElement> unlinkedRecentMeetings = recentMeetings.FindElements(By.XPath("//li[@title='Final version not published']"));
@@ -153,12 +148,12 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     if (link.FindElements(By.TagName("span"))[1].Text.Split(" - ").Length > 0)
                     {
                         meetingType = link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[0];
-                        meetingDate = DateTime.Parse(link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[1]).ToShortDateString();
+                        meetingDate = DateTime.Parse(link.FindElements(By.TagName("span"))[1].Text.Split(" - ")[1]).ToString("yyyy-MM-dd");
                     }
 
                     meetingsList.Add(new Meeting()
                     {
-                        MeetingID = meetingType + " " + meetingDate + " Overland Park",
+                        MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         Jurisdiction = "Overland Park",
@@ -168,32 +163,10 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                 }
             }
 
-            var credentials = new BasicAWSCredentials("accessKey", "secretKey");
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
 
-            foreach (var meeting in meetingsList)
-            {
-                using (var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2))
-                {
-                    await client.PutItemAsync(new PutItemRequest
-                    {
-                        TableName = "Meeting",
-                        Item = new Dictionary<string, AttributeValue>()
-                        {
-                            { "MeetingID", new AttributeValue { S = meeting.MeetingID ?? "" }},
-                            { "MeetingType", new AttributeValue { S = meeting.MeetingType ?? ""  }},
-                            { "Jurisdiction", new AttributeValue { S = meeting.Jurisdiction  }},
-                            { "State", new AttributeValue { S = meeting.State }},
-                            { "County", new AttributeValue { S = meeting.County }},
-                            { "MeetingLocation", new AttributeValue { S = meeting.MeetingLocation ?? "" }},
-                            { "MeetingDate", new AttributeValue { S = meeting.MeetingDate ?? ""  }},
-                            { "MeetingTime", new AttributeValue { S = meeting.MeetingTime ?? "" }},
-                            { "AgendaURL", new AttributeValue { S = meeting.AgendaURL ?? ""  }},
-                            { "MinutesURL", new AttributeValue { S = meeting.MinutesURL ?? ""  }},
-                            { "VideoURL", new AttributeValue { S = meeting.VideoURL ?? ""  }}
-                        }
-                    });
-                }
-            }
+            mainPageDriver.Quit();
+            subPageDriver.Quit();
         }    
     }
 }
