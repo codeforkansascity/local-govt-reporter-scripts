@@ -30,6 +30,8 @@ namespace LocalGovtReporter.Methods
 
                     if (value != null)
                     {
+                        if (prop.Name == "SourceURL" && !string.IsNullOrEmpty(value.ToString()))
+                            dictionary.Add("SourceURL", new AttributeValue { S = meeting.SourceURL });
                         if (prop.Name == "MeetingID" && !string.IsNullOrEmpty(value.ToString()))
                             dictionary.Add("MeetingID", new AttributeValue { S = meeting.MeetingID });
                         if (prop.Name == "MeetingType" && !string.IsNullOrEmpty(value.ToString()))
@@ -51,8 +53,10 @@ namespace LocalGovtReporter.Methods
                         if (prop.Name == "VideoURL" && !string.IsNullOrEmpty(value.ToString()))
                             dictionary.Add("VideoURL", new AttributeValue { S = meeting.VideoURL });
                         if (prop.Name == "MinutesURL" && !string.IsNullOrEmpty(value.ToString()))
-                            dictionary.Add("MinutesURL", new AttributeValue { S = meeting.MinutesURL }); ;
-                    } 
+                            dictionary.Add("MinutesURL", new AttributeValue { S = meeting.MinutesURL });
+                        if (prop.Name == "Tags" && !string.IsNullOrEmpty(value.ToString()))
+                            dictionary.Add("Tags", new AttributeValue { SS = meeting.Tags });
+                    }
                 }
 
                 await client.PutItemAsync(new PutItemRequest

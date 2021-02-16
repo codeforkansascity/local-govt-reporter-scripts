@@ -1,4 +1,5 @@
-﻿using LocalGovtReporter.Methods;
+﻿using LocalGovtReporter.Interfaces;
+using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Kansas.City
 {
-    class OverlandPark
+    public class OverlandPark : IScript
     {
-        public static async Task RunScriptAsync()
+        public async Task RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
             IWebDriver subPageDriver = new ChromeDriver();
@@ -44,6 +45,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                 meetingsList.Add(new Meeting()
                 {
+                    SourceURL = subPageDriver.Url,
                     MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-").Replace(",", ""),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
@@ -53,7 +55,8 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     State = "KS",
                     County = "Johnson",
                     AgendaURL = subPageDriver.FindElement(By.CssSelector("#document-cover-pdf")).GetAttribute("href"),
-                    PacketURL = subPageDriver.FindElement(By.CssSelector("#ctl00_MainContent_DocumentPrintVersion")).GetAttribute("href")
+                    PacketURL = subPageDriver.FindElement(By.CssSelector("#ctl00_MainContent_DocumentPrintVersion")).GetAttribute("href"),
+                    Tags = HelperMethods.CreateTags(meetingType)
                 });
             }
 
@@ -74,12 +77,14 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                     meetingsList.Add(new Meeting()
                     {
+                        SourceURL = subPageDriver.Url,
                         MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         Jurisdiction = "Overland Park",
                         State = "KS",
-                        County = "Johnson"
+                        County = "Johnson",
+                        Tags = HelperMethods.CreateTags(meetingType)
                     });
                 }
             }
@@ -116,6 +121,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                     meetingsList.Add(new Meeting()
                     {
+                        SourceURL = subPageDriver.Url,
                         MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
@@ -127,7 +133,8 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                         MinutesURL = minutesURL,
                         VideoURL = subPageDriver.FindElement(By.CssSelector("#ExternalLink")).GetAttribute("href"),
                         AgendaURL = subPageDriver.FindElement(By.CssSelector("#document-cover-pdf")).GetAttribute("href"),
-                        PacketURL = subPageDriver.FindElement(By.CssSelector("#ctl00_MainContent_DocumentPrintVersion")).GetAttribute("href")
+                        PacketURL = subPageDriver.FindElement(By.CssSelector("#ctl00_MainContent_DocumentPrintVersion")).GetAttribute("href"),
+                        Tags = HelperMethods.CreateTags(meetingType)
                     });
                 }
                 catch
@@ -153,12 +160,14 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                     meetingsList.Add(new Meeting()
                     {
+                        SourceURL = subPageDriver.Url,
                         MeetingID = ("Overland-Park-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         Jurisdiction = "Overland Park",
                         State = "KS",
-                        County = "Johnson"
+                        County = "Johnson",
+                        Tags = HelperMethods.CreateTags(meetingType)
                     });
                 }
             }

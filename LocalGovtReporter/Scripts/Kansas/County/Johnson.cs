@@ -1,4 +1,5 @@
-﻿using LocalGovtReporter.Methods;
+﻿using LocalGovtReporter.Interfaces;
+using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Kansas.County
 {
-    public static class Johnson
+    public class Johnson : IScript
     {
-        public static async Task RunScriptAsync()
+        public async Task RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
 
@@ -39,6 +40,7 @@ namespace LocalGovtReporter.Scripts.Kansas.County
                     
                 meetingsList.Add(new Meeting()
                 {
+                    SourceURL = mainPageDriver.Url,
                     MeetingID = ("Johnson-County-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
@@ -46,7 +48,8 @@ namespace LocalGovtReporter.Scripts.Kansas.County
                     Jurisdiction = "Johnson County",
                     State = "KS",
                     County = "Johnson",
-                    AgendaURL = agendaURL
+                    AgendaURL = agendaURL,
+                    Tags = HelperMethods.CreateTags(meetingType)
                 });
             }
 
@@ -70,6 +73,7 @@ namespace LocalGovtReporter.Scripts.Kansas.County
 
                 meetingsList.Add(new Meeting()
                 {
+                    SourceURL = agendaURL,
                     MeetingID = ("Johnson-County-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                     MeetingType = meetingType,
                     MeetingDate = meetingDate,
@@ -77,7 +81,8 @@ namespace LocalGovtReporter.Scripts.Kansas.County
                     Jurisdiction = "Johnson County",
                     State = "KS",
                     County = "Johnson",
-                    AgendaURL = agendaURL
+                    AgendaURL = agendaURL,
+                    Tags = HelperMethods.CreateTags(meetingType)
                 });
             }
 

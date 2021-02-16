@@ -1,21 +1,29 @@
-﻿using LocalGovtReporter.Scripts.Kansas.City;
-using LocalGovtReporter.Scripts.Kansas.County;
-using LocalGovtReporter.Scripts.Missouri.County;
+﻿using LocalGovtReporter.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using KansasCity = LocalGovtReporter.Scripts.Missouri.City.KansasCity;
 
 namespace LocalGovtReporter
 {
     class Program
     {
-        static async Task Main()
+        public static async Task Main()
         {
-            await OverlandPark.RunScriptAsync();
-            await KansasCity.RunScriptAsync();
-            await Mission.RunScriptAsync();
-            await Jackson.RunScriptAsync();
-            await Johnson.RunScriptAsync();
-            await Wyandotte.RunScriptAsync();
+            IEnumerable<IScript> scripts =
+                Assembly.GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(type => typeof(IScript).IsAssignableFrom(type))
+                    .Where(type =>
+                        !type.IsAbstract &&
+                        !type.IsGenericType &&
+                        type.GetConstructor(new Type[0]) != null)
+                    .Select(type => (IScript)Activator.CreateInstance(type))
+                    .ToList();
+
+            foreach (IScript script in scripts)
+                await script.RunScriptAsync();
         }
     }
 }

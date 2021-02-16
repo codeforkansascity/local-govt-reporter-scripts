@@ -1,4 +1,5 @@
-﻿using LocalGovtReporter.Methods;
+﻿using LocalGovtReporter.Interfaces;
+using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,24 +11,9 @@ using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Missouri.City
 {
-    public static class KansasCity
+    public class KansasCity : IScript
     {
-        public static bool ContainsTag(this IWebElement element, string tagName)
-        {
-            string elementText = element.GetAttribute("innerHTML");
-            return CheckStringForTag(elementText, tagName);
-        }
-
-        public static bool CheckStringForTag(string text, string tagName)
-        {
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                return text.Contains("<" + tagName + ">") || text.Contains("</" + tagName + ">") || text.Contains("<" + tagName + " ");
-            }
-            return false;
-        }
-
-        public static async Task RunScriptAsync()
+        public async Task RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
 
@@ -46,16 +32,18 @@ namespace LocalGovtReporter.Scripts.Missouri.City
                     string meetingDateRaw = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
                     string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
                     string meetingType = outputRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                    string meetingSource = outputRow.FindElements(By.TagName("td"))[1].FindElement(By.TagName("a")).GetAttribute("href").Trim();
                     string meetingTime = outputRow.FindElements(By.TagName("td"))[2].Text.Trim();
                     string agendaURL = outputRow.FindElements(By.TagName("td"))[4].FindElement(By.TagName("a")).GetAttribute("href").Trim();
 
                     string minutesURL = string.Empty;
 
-                    if (ContainsTag(outputRow.FindElements(By.TagName("td"))[5], "a"))
+                    if (HelperMethods.ContainsTag(outputRow.FindElements(By.TagName("td"))[5], "a"))
                         minutesURL = outputRow.FindElements(By.TagName("td"))[5].FindElement(By.TagName("a")).GetAttribute("href").Trim();
 
                     meetingsList.Add(new Meeting()
                     {
+                        SourceURL = meetingSource,
                         MeetingID = ("KCMO-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
@@ -64,7 +52,8 @@ namespace LocalGovtReporter.Scripts.Missouri.City
                         State = "MO",
                         County = "Jackson",
                         AgendaURL = agendaURL,
-                        MinutesURL = minutesURL
+                        MinutesURL = minutesURL,
+                        Tags = HelperMethods.CreateTags(meetingType)
                     });
                 }
             }

@@ -1,4 +1,5 @@
-﻿using LocalGovtReporter.Methods;
+﻿using LocalGovtReporter.Interfaces;
+using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Scripts.Kansas.City
 {
-    class Mission
+    public class Mission : IScript
     {
-        public static async Task RunScriptAsync()
+        public async Task RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
             IWebDriver subPageDriver = new ChromeDriver();
@@ -69,17 +70,19 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                             minutesURL = meetingLink.GetAttribute("href").Trim();
                     }
 
-                    meetingsList.Add(new Meeting() { 
-                        MeetingID = ("Mission-" + meetingDate + "-" + meetingType).Replace(" ", "-"), 
-                        MeetingType = meetingType, 
+                    meetingsList.Add(new Meeting() {
+                        SourceURL = subPageDriver.Url,
+                        MeetingID = ("Mission-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
+                        MeetingType = meetingType,
                         MeetingDate = meetingDate,
                         Jurisdiction = "Mission",
                         State = "KS",
                         County = "Johnson",
-                        AgendaURL = agendaURL, 
-                        MinutesURL = minutesURL, 
-                        PacketURL = packetURL, 
-                        VideoURL = videoURL 
+                        AgendaURL = agendaURL,
+                        MinutesURL = minutesURL,
+                        PacketURL = packetURL,
+                        VideoURL = videoURL,
+                        Tags = HelperMethods.CreateTags(meetingType)
                     });
                 }
             }

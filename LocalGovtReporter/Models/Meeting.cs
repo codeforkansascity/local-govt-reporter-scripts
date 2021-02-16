@@ -4,6 +4,7 @@ namespace LocalGovtReporter.Models
 {
     public class Meeting
     {
+        public string SourceURL { get; set; }
         public string MeetingID { get; set; }
         public string MeetingType { get; set; }
         public string MeetingDate { get; set; }
