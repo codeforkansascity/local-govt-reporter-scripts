@@ -24,9 +24,13 @@ C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtR
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\LocalGovtReporter.pdb
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\AWSSDK.Core.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\AWSSDK.DynamoDBv2.dll
+C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\itextsharp.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\WebDriver.Support.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\WebDriver.dll
+C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.AssemblyInfoInputs.cache
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.AssemblyInfo.cs
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.csproj.CoreCompileInputs.cache
@@ -34,4 +38,3 @@ C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtR
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.dll
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.pdb
 C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.genruntimeconfig.cache
-C:\Users\SteveBosilovatz\Desktop\Personal\local-govt-reporter-scripts\LocalGovtReporter\obj\Debug\netcoreapp3.1\LocalGovtReporter.csprojAssemblyReference.cache

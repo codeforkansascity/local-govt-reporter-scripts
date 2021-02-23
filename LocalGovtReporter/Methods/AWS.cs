@@ -56,6 +56,12 @@ namespace LocalGovtReporter.Methods
                             dictionary.Add("MinutesURL", new AttributeValue { S = meeting.MinutesURL });
                         if (prop.Name == "Tags" && !string.IsNullOrEmpty(value.ToString()))
                             dictionary.Add("Tags", new AttributeValue { SS = meeting.Tags });
+                        if (prop.Name == "MeetingAddress" && !string.IsNullOrEmpty(value.ToString()))
+                            dictionary.Add("MeetingAddress", new AttributeValue { S = meeting.MeetingAddress });
+                        if (prop.Name == "Latitude" && !string.IsNullOrEmpty(value.ToString()))
+                            dictionary.Add("Latitude", new AttributeValue { S = meeting.Latitude });
+                        if (prop.Name == "Longitude" && !string.IsNullOrEmpty(value.ToString()))
+                            dictionary.Add("Longitude", new AttributeValue { S = meeting.Longitude });
                     }
                 }
 

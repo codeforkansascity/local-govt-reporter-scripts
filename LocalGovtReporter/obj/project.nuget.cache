@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "uojYpF8TMGOWmr0Q9hHsW8ANq9vqIWl5J7dUnnBviQOWjV3QhIbARmDuSrs4FrMTsa80sQ6VdJUyyNzernpqXg==",
+  "dgSpecHash": "UnJ1JVDIG5XD00xDqSuN1McLysbc0IxtOSOVSJLAB8BMmQaQW1r5wuQjYtP4AMyOGWuWBpgtQUYnq6Ahz6BTdw==",
   "success": true,
   "projectFilePath": "C:\\Users\\SteveBosilovatz\\Desktop\\Personal\\local-govt-reporter-scripts\\LocalGovtReporter\\LocalGovtReporter.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\awssdk.core\\3.5.1.42\\awssdk.core.3.5.1.42.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\awssdk.dynamodbv2\\3.5.4.1\\awssdk.dynamodbv2.3.5.4.1.nupkg.sha512",
+    "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\bouncycastle\\1.8.6.1\\bouncycastle.1.8.6.1.nupkg.sha512",
+    "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\documentformat.openxml\\2.12.2\\documentformat.openxml.2.12.2.nupkg.sha512",
+    "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\itextsharp\\5.5.13.2\\itextsharp.5.5.13.2.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
@@ -53,6 +56,7 @@
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.io.compression.zipfile\\4.3.0\\system.io.compression.zipfile.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
@@ -93,5 +97,26 @@
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\SteveBosilovatz\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'BouncyCastle 1.8.6.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "BouncyCastle",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'iTextSharp 5.5.13.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "iTextSharp",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

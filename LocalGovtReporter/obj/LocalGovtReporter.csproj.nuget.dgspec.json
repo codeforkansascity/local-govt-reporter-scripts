@@ -49,6 +49,10 @@
               "target": "Package",
               "version": "[3.5.4.1, )"
             },
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[2.12.2, )"
+            },
             "Selenium.Support": {
               "target": "Package",
               "version": "[3.141.0, )"
@@ -60,6 +64,10 @@
             "System.Collections": {
               "target": "Package",
               "version": "[4.3.0, )"
+            },
+            "iTextSharp": {
+              "target": "Package",
+              "version": "[5.5.13.2, )"
             }
           },
           "imports": [
@@ -77,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

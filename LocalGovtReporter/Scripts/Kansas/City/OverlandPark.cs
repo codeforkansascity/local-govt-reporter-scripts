@@ -42,6 +42,22 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                 string meetingTime = subPageDriver.FindElement(By.CssSelector("#meeting-time")).Text;
                 string meetingLocation = subPageDriver.FindElement(By.CssSelector("#meeting-location")).Text;
+                string meetingAddress = string.Empty;
+                string latitude = string.Empty;
+                string longitude = string.Empty;
+
+                if (meetingLocation.Contains("Convention Center"))
+                {
+                    meetingAddress = "6000 College Blvd, Overland Park, KS 66211";
+                    latitude = "38.916748";
+                    longitude = "-94.656653";
+                }
+                else if (meetingLocation.Contains("City Hall"))
+                {
+                    meetingAddress = "8500 Santa Fe Dr, Overland Park, KS 66212";
+                    latitude = "38.974290";
+                    longitude = "-94.685390";
+                }
 
                 meetingsList.Add(new Meeting()
                 {
@@ -51,6 +67,9 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     MeetingDate = meetingDate,
                     MeetingTime = meetingTime,
                     MeetingLocation = meetingLocation,
+                    MeetingAddress = meetingAddress,
+                    Latitude = latitude,
+                    Longitude = longitude,
                     Jurisdiction = "Overland Park",
                     State = "KS",
                     County = "Johnson",
@@ -111,6 +130,22 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     string meetingTime = subPageDriver.FindElement(By.CssSelector("#meeting-time")).Text;
                     string meetingLocation = subPageDriver.FindElement(By.CssSelector("#meeting-location")).Text;
                     string minutesURL = string.Empty;
+                    string meetingAddress = string.Empty;
+                    string latitude = string.Empty;
+                    string longitude = string.Empty;
+
+                    if (meetingLocation.Contains("Convention Center"))
+                    {
+                        meetingAddress = "6000 College Blvd, Overland Park, KS 66211";
+                        latitude = "38.916748";
+                        longitude = "-94.656653";
+                    }
+                    else if (meetingLocation.Contains("City Hall"))
+                    {
+                        meetingAddress = "8500 Santa Fe Dr, Overland Park, KS 66212";
+                        latitude = "38.974290";
+                        longitude = "-94.685390";
+                    }
 
                     if (subPageDriver.FindElements(By.CssSelector("#ctl00_MainContent_MinutesDocument")).Count > 0)
                     {
@@ -127,6 +162,9 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                         MeetingDate = meetingDate,
                         MeetingTime = meetingTime,
                         MeetingLocation = meetingLocation,
+                        MeetingAddress = meetingAddress,
+                        Latitude = latitude,
+                        Longitude = longitude,
                         Jurisdiction = "Overland Park",
                         State = "KS",
                         County = "Johnson",

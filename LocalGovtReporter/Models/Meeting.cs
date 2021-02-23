@@ -10,6 +10,9 @@ namespace LocalGovtReporter.Models
         public string MeetingDate { get; set; }
         public string MeetingTime { get; set; }
         public string MeetingLocation { get; set; }
+        public string MeetingAddress{ get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
         public string Jurisdiction { get; set; }
         public string State { get; set; }
         public string County { get; set; }

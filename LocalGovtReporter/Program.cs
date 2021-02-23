@@ -1,4 +1,8 @@
 ﻿using LocalGovtReporter.Interfaces;
+using LocalGovtReporter.Scripts.Kansas.City;
+using LocalGovtReporter.Scripts.Kansas.County;
+using LocalGovtReporter.Scripts.Missouri.City;
+using LocalGovtReporter.Scripts.Missouri.County;
 using System;
 using System.Collections.Generic;
 using System.Linq;

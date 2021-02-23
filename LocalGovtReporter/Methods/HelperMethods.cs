@@ -1,9 +1,15 @@
-﻿using LocalGovtReporter.Models;
+﻿using DocumentFormat.OpenXml.Packaging;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -24,10 +30,37 @@ namespace LocalGovtReporter.Methods
             return false;
         }
 
+        public static string ReadPdfFile(string url)
+        {
+            PdfReader reader = new PdfReader(new Uri(url));
+            return PdfTextExtractor.GetTextFromPage(reader, 1);
+        }
+
+        public static string ReadWordFile(string url)
+        {
+            using (WebClient myWebClient = new WebClient())
+            {
+                byte[] bytes = myWebClient.DownloadData(url);
+                MemoryStream memoryStream = new MemoryStream(bytes);
+                MainDocumentPart mainPart;
+
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(memoryStream, false))
+                {
+                    mainPart = wordDocument.MainDocumentPart;
+                }
+
+                return mainPart.Document.Body.InnerText;
+            }
+        }
+
         public static List<string> CreateTags(string meetingType)
         {
             List<string> tags = new List<string>();
 
+            if (meetingType == "KC Parking and Transportation Commission")
+                tags.Add("Transportation");
+            if (meetingType == "VFKCC")
+                tags.Add("Other");
             if (meetingType.Contains("Special"))
                 tags.Add("Special Session");
             if (meetingType.Contains("Council"))
@@ -124,7 +157,9 @@ namespace LocalGovtReporter.Methods
                 tags.Add("Other");
             if (meetingType == "City Plan Commission")
                 tags.Add("Other");
-            
+            if (meetingType == "Historic Preservation Commission")
+                tags.Add("Other");
+
             return tags;
         }
 
@@ -173,6 +208,9 @@ namespace LocalGovtReporter.Methods
                     MeetingDate = meetingDate,
                     MeetingTime = meetingTime,
                     MeetingLocation = meetingLocation,
+                    MeetingAddress = "415 E 12th St, Kansas City, MO 64106",
+                    Latitude = "39.099123",
+                    Longitude = "-94.577986",
                     Jurisdiction = "Jackson County",
                     State = "MO",
                     County = "Jackson",
@@ -205,6 +243,9 @@ namespace LocalGovtReporter.Methods
                     MeetingTime = meetingTime,
                     MeetingLocation = meetingLocation,
                     Jurisdiction = "Jackson County",
+                    MeetingAddress = "415 E 12th St, Kansas City, MO 64106",
+                    Latitude = "39.099123",
+                    Longitude = "-94.577986",
                     State = "MO",
                     County = "Jackson",
                     AgendaURL = meetingAgenda,

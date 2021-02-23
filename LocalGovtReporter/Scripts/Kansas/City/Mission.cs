@@ -40,6 +40,10 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     string packetURL = string.Empty;
                     string videoURL = string.Empty;
                     string minutesURL = string.Empty;
+                    string meetingLocation = string.Empty;
+                    string meetingAddress = string.Empty;
+                    string latitude = string.Empty;
+                    string longitude = string.Empty;
 
                     string agendaName = meeting.FindElement(By.CssSelector(".agendaTitle")).Text.Trim();
                     ReadOnlyCollection<IWebElement> meetingLinks = meeting.FindElements(By.CssSelector(".agendaLink a"));
@@ -69,12 +73,37 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                         else if (meetingLink.Text == "Minutes")
                             minutesURL = meetingLink.GetAttribute("href").Trim();
                     }
+                  
+                    try
+                    {
+                        var agendaText = HelperMethods.ReadPdfFile(agendaURL);
+
+                        if (agendaText.Contains("Zoom") || agendaText.Contains("ZOOM") || agendaText.Contains("zoom"))
+                        {
+                            meetingLocation = "Remote Meeting";
+                        }
+                        else
+                        {
+                            meetingLocation = "City Hall";
+                            meetingAddress = "6090 Woodson Rd, Mission, KS 66202";
+                            latitude = "39.019020";
+                            longitude = "-94.654040";
+                        }
+                    }
+                    catch
+                    {
+
+                    }                   
 
                     meetingsList.Add(new Meeting() {
                         SourceURL = subPageDriver.Url,
                         MeetingID = ("Mission-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
                         MeetingType = meetingType,
                         MeetingDate = meetingDate,
+                        MeetingLocation = meetingLocation,
+                        MeetingAddress = meetingAddress,
+                        Latitude = latitude,
+                        Longitude = longitude,
                         Jurisdiction = "Mission",
                         State = "KS",
                         County = "Johnson",
