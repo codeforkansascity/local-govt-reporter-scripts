@@ -93,26 +93,9 @@ namespace LocalGovtReporter.Scripts.Kansas.City
                     catch
                     {
 
-                    }                   
+                    }
 
-                    meetingsList.Add(new Meeting() {
-                        SourceURL = subPageDriver.Url,
-                        MeetingID = ("Mission-" + meetingDate + "-" + meetingType).Replace(" ", "-"),
-                        MeetingType = meetingType,
-                        MeetingDate = meetingDate,
-                        MeetingLocation = meetingLocation,
-                        MeetingAddress = meetingAddress,
-                        Latitude = latitude,
-                        Longitude = longitude,
-                        Jurisdiction = "Mission",
-                        State = "KS",
-                        County = "Johnson",
-                        AgendaURL = agendaURL,
-                        MinutesURL = minutesURL,
-                        PacketURL = packetURL,
-                        VideoURL = videoURL,
-                        Tags = HelperMethods.CreateTags(meetingType)
-                    });
+                    HelperMethods.AddMeeting(meetingsList, subPageDriver.Url, "Mission", meetingType, meetingDate, null, meetingLocation, meetingAddress, latitude, longitude, "KS", "Johnson", agendaURL, minutesURL, packetURL, videoURL);
                 }
             }
 
