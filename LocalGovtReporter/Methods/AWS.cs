@@ -2,7 +2,9 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
+using Amazon.Runtime.CredentialManagement;
 using LocalGovtReporter.Models;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,13 +13,27 @@ namespace LocalGovtReporter.Methods
 {
     public class AWS
     {
+        //public static AmazonDynamoDBClient GetAmazonDynamoDBClient()
+        //{
+        //    var credentials = new BasicAWSCredentials("accessKey", "secretKey");
+        //    var amazonDynamoDBClient = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2);
+        //    return amazonDynamoDBClient;
+        //}
         public static AmazonDynamoDBClient GetAmazonDynamoDBClient()
         {
-            var credentials = new BasicAWSCredentials("accessKey", "secretKey");
-            var amazonDynamoDBClient = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2);
-            return amazonDynamoDBClient;
-        }
+            AmazonDynamoDBClient client = null;
 
+#if DEBUG
+            var sharedFile = new SharedCredentialsFile();
+            sharedFile.TryGetProfile("localgovt", out var profile);
+            AWSCredentialsFactory.TryGetAWSCredentials(profile, sharedFile, out var credentials);
+            client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2);
+#else
+                client = new AmazonDynamoDBClient(RegionEndpoint.USEast2);
+#endif
+
+            return client;
+        }
         public static async Task AddMeetingsAsync(AmazonDynamoDBClient client, List<Meeting> meetings)
         {            
             foreach (var meeting in meetings)
@@ -73,9 +89,9 @@ namespace LocalGovtReporter.Methods
                         Item = dictionary
                     });
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    var er = ex.Message;
                 }
             }
         }

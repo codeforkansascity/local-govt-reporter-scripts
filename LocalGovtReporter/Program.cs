@@ -26,8 +26,15 @@ namespace LocalGovtReporter
                     .Select(type => (IScript)Activator.CreateInstance(type))
                     .ToList();
 
-            foreach (IScript script in scripts)
-                await script.RunScriptAsync();
+            try
+            {
+                foreach (IScript script in scripts) //.Where(s => s.ToString().Contains("Mission")))
+                    await script.RunScriptAsync();
+            }
+            catch (Exception ex)
+			{
+                var z = ex.Message;
+			}
         }
     }
 }

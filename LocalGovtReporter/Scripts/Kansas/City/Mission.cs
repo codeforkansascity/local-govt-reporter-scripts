@@ -6,8 +6,12 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.ServiceModel.Syndication;
+using System.Xml;
 
 namespace LocalGovtReporter.Scripts.Kansas.City
 {
@@ -19,20 +23,46 @@ namespace LocalGovtReporter.Scripts.Kansas.City
             IWebDriver subPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();
+            ParseRSSdotnet();
 
             mainPageDriver.Navigate().GoToUrl("https://www.missionks.org/agenda.aspx");
+            mainPageDriver.Navigate().GoToUrl("https://www.missionks.org/city-government/agendas-minutes/");
+    
 
-            var linksContainer = mainPageDriver.FindElement(By.CssSelector("#aspnetForm > div.mainContainer > div.mainContainer > div.secondContainer > div.secondRight > div.pageLeftNoHigh"));
-            ReadOnlyCollection<IWebElement> links = linksContainer.FindElements(By.CssSelector(".floatLeft a"));
+                var linksContainer = mainPageDriver.FindElement(By.CssSelector(".et_pb_text_inner"));
+            //var linksContainer = mainPageDriver.FindElement(By.CssSelector("#aspnetForm > div.mainContainer > div.mainContainer > div.secondContainer > div.secondRight > div.pageLeftNoHigh"));
+            ReadOnlyCollection<IWebElement> links = linksContainer.FindElements(By.TagName("a"));
+
+            //https://www.missionks.org/events/feed/
 
             foreach (var link in links)
             {
                 subPageDriver.Navigate().GoToUrl(link.GetAttribute("href"));
+                var futureButton = subPageDriver.FindElement(By.CssSelector(".tribe-events-c-top-bar__today-button"));
+                futureButton.Click();
+                Thread.Sleep(2000); //Hopefully allow time for page to re-render
+                var linksContainer2 = subPageDriver.FindElement(By.CssSelector(".tribe-events-calendar-list"));
+                ReadOnlyCollection<IWebElement> links2 = linksContainer2.FindElements(By.CssSelector(".tribe-events-calendar-list__event-row"));
+                foreach (var link2 in links2)
+                {
+                    var a0 = link2.FindElement(By.CssSelector(".tribe-events-calendar-list__event-details"));
+                    var aa0 = link2.FindElements(By.CssSelector(".tribe-events-calendar-list__event-datetime-wrapper"));
+                     aa0 = link2.FindElements(By.CssSelector(".tribe-events-calendar-list__event-details"));
+                    foreach (var lg in aa0)
+                    {
+                        var el = lg.FindElement(By.TagName("span"));
+                        var el1 = el.GetAttribute("innerHTML");
+                        var a1 = lg.FindElement(By.TagName("a"));
+                        var a11 = el.GetAttribute("href");
+                        var a12 = el.GetAttribute("title");
+                    }
+                    link.FindElements(By.TagName("button"))[0].FindElement(By.ClassName("tribe-events-c-top-bar__datepicker-button")).Click();
+
                 var meetingTypeRawText = subPageDriver.FindElement(By.CssSelector("div.noteBox:nth-child(1) > span:nth-child(1)")).Text.Trim();
                 var meetingTypeCleanedText = meetingTypeRawText.Substring(0, meetingTypeRawText.IndexOf('(')).Trim();
                 var currentMeetingsContainer = subPageDriver.FindElement(By.CssSelector(".pageLeftNoHigh > div:nth-child(8)"));
                 ReadOnlyCollection<IWebElement> meetings = currentMeetingsContainer.FindElements(By.CssSelector(".itemLineConSM"));
-
+         
                 foreach (var meeting in meetings)
                 {
                     string meetingDate = string.Empty;
@@ -97,6 +127,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
                     HelperMethods.AddMeeting(meetingsList, subPageDriver.Url, "Mission", meetingType, meetingDate, null, meetingLocation, meetingAddress, latitude, longitude, "KS", "Johnson", agendaURL, minutesURL, packetURL, videoURL);
                 }
+                }
             }
 
             await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
@@ -104,5 +135,32 @@ namespace LocalGovtReporter.Scripts.Kansas.City
             mainPageDriver.Quit();
             subPageDriver.Quit();
         }
+        public void ParseRSSdotnet()
+        {
+            SyndicationFeed feed = null;
+
+            try
+            {
+                using (var reader = XmlReader.Create("https://www.missionks.org/events/feed/"))
+                {
+                    feed = SyndicationFeed.Load(reader);
+                }
+            }
+            catch { } // TODO: Deal with unavailable resource.
+
+            if (feed != null)
+            {
+                foreach (var element in feed.Items)
+                {
+                    Console.WriteLine($"Title: {element.Title.Text}");
+                    Console.WriteLine($"Summary: {element.Summary.Text}");
+                    Console.WriteLine($"Summary: {element.Links[0].Uri}");
+                    Console.WriteLine($"Summary: {element.PublishDate.DateTime}");
+                }
+            }
+        }
+
     }
+
+
 }
