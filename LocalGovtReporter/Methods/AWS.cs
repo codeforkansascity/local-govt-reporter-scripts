@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace LocalGovtReporter.Methods
 {
@@ -35,54 +36,58 @@ namespace LocalGovtReporter.Methods
             return client;
         }
         public static async Task AddMeetingsAsync(AmazonDynamoDBClient client, List<Meeting> meetings)
-        {            
+        {
+            int count = 0;
             foreach (var meeting in meetings)
             {
+                count++;
+                Console.WriteLine($"Adding meeting {count} of {meetings.Count}");
+
+                var dictionary = new Dictionary<string, AttributeValue>();
                 try
                 {
-                    var dictionary = new Dictionary<string, AttributeValue>();
 
                     foreach (PropertyInfo prop in meeting.GetType().GetProperties())
                     {
                         object value = prop.GetValue(meeting, null);
 
-                        if (value != null)
-                        {
-                            if (prop.Name == "SourceURL" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("SourceURL", new AttributeValue { S = meeting.SourceURL });
-                            if (prop.Name == "MeetingID" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MeetingID", new AttributeValue { S = meeting.MeetingID });
-                            if (prop.Name == "MeetingType" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MeetingType", new AttributeValue { S = meeting.MeetingType });
-                            if (prop.Name == "Jurisdiction" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("Jurisdiction", new AttributeValue { S = meeting.Jurisdiction });
-                            if (prop.Name == "State" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("State", new AttributeValue { S = meeting.State });
-                            if (prop.Name == "County" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("County", new AttributeValue { S = meeting.County });
-                            if (prop.Name == "MeetingDate" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MeetingDate", new AttributeValue { S = meeting.MeetingDate });
-                            if (prop.Name == "MeetingLocation" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MeetingLocation", new AttributeValue { S = meeting.MeetingLocation });
-                            if (prop.Name == "AgendaURL" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("AgendaURL", new AttributeValue { S = meeting.AgendaURL });
-                            if (prop.Name == "PacketURL" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("PacketURL", new AttributeValue { S = meeting.PacketURL });
-                            if (prop.Name == "VideoURL" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("VideoURL", new AttributeValue { S = meeting.VideoURL });
-                            if (prop.Name == "MinutesURL" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MinutesURL", new AttributeValue { S = meeting.MinutesURL });
-                            if (prop.Name == "Tags" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("Tags", new AttributeValue { SS = meeting.Tags });
-                            if (prop.Name == "MeetingAddress" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("MeetingAddress", new AttributeValue { S = meeting.MeetingAddress });
-                            if (prop.Name == "Latitude" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("Latitude", new AttributeValue { S = meeting.Latitude });
-                            if (prop.Name == "Longitude" && !string.IsNullOrEmpty(value.ToString()))
-                                dictionary.Add("Longitude", new AttributeValue { S = meeting.Longitude });
-                        }
+      //                  if (value != null)
+						//{
+						//	if (prop.Name == "SourceURL" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("SourceURL", new AttributeValue { S = meeting.SourceURL });
+						//	if (prop.Name == "MeetingID" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MeetingID", new AttributeValue { S = meeting.MeetingID });
+						//	if (prop.Name == "MeetingType" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MeetingType", new AttributeValue { S = meeting.MeetingType });
+						//	if (prop.Name == "Jurisdiction" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("Jurisdiction", new AttributeValue { S = meeting.Jurisdiction });
+						//	if (prop.Name == "State" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("State", new AttributeValue { S = meeting.State });
+						//	if (prop.Name == "County" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("County", new AttributeValue { S = meeting.County });
+						//	if (prop.Name == "MeetingDate" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MeetingDate", new AttributeValue { S = meeting.MeetingDate });
+						//	if (prop.Name == "MeetingLocation" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MeetingLocation", new AttributeValue { S = meeting.MeetingLocation });
+						//	if (prop.Name == "AgendaURL" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("AgendaURL", new AttributeValue { S = meeting.AgendaURL });
+						//	if (prop.Name == "PacketURL" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("PacketURL", new AttributeValue { S = meeting.PacketURL });
+						//	if (prop.Name == "VideoURL" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("VideoURL", new AttributeValue { S = meeting.VideoURL });
+						//	if (prop.Name == "MinutesURL" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MinutesURL", new AttributeValue { S = meeting.MinutesURL });
+						//	if (prop.Name == "Tags" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("Tags", new AttributeValue { SS = meeting.Tags });
+						//	if (prop.Name == "MeetingAddress" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("MeetingAddress", new AttributeValue { S = meeting.MeetingAddress });
+						//	if (prop.Name == "Latitude" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("Latitude", new AttributeValue { S = meeting.Latitude });
+						//	if (prop.Name == "Longitude" && !string.IsNullOrEmpty(value.ToString()))
+						//		dictionary.Add("Longitude", new AttributeValue { S = meeting.Longitude });
+						//}
+                        AddToDictionary(meeting, dictionary, prop.Name, value);
                     }
-
                     await client.PutItemAsync(new PutItemRequest
                     {
                         TableName = "Meeting",
@@ -91,9 +96,49 @@ namespace LocalGovtReporter.Methods
                 }
                 catch (Exception ex)
                 {
-                    var er = ex.Message;
+                    foreach (KeyValuePair<string, AttributeValue> kvp in dictionary)
+                    {
+                        if (kvp.Key.Equals("MeetingID") || kvp.Key.Equals("MeetingDate"))
+                            Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value.S);
+                    }
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
-    }
+        private static List<string> properties = new List<string>(){ "SourceURL", "MeetingID", "MeetingType" ,
+            "Jurisdiction", "State", "County" ,"MeetingDate", "MeetingLocation", "AgendaURL"
+            ,"PacketURL", "VideoURL", "MinutesURL","Tags", "MeetingAddress", "Latitude", "Longitude" };
+        
+        private static void AddToDictionary(Meeting meeting, Dictionary<string, AttributeValue> dictionary, string propertyName, object value)
+		{
+            bool propertyWeTrack = properties.Any(s => s.Contains(propertyName));
+            if (propertyWeTrack)
+            {
+                string propValue = "";
+                if (value != null && !string.IsNullOrEmpty(value.ToString()))
+                {
+                    propValue = value.ToString();
+                    if (propertyName.Equals("Tags"))
+                    {
+                        List<string> tags = (List<string>)value;
+                        if (tags.Count > 0)
+                            dictionary.Add(propertyName, new AttributeValue { SS = (List<string>)value });
+                    }
+                    else
+                        dictionary.Add(propertyName, new AttributeValue { S = propValue });
+                }
+                else
+                {
+                    //if (propertyName.Equals("Tags"))
+                    //{
+                    //    dictionary.Add(propertyName, new AttributeValue { SS = new List<string>() });
+                    //}
+                    //else
+                    //{
+                    //    dictionary.Add(propertyName, new AttributeValue { S = propValue });
+                    //}
+                }
+            }
+		}
+	}
 }

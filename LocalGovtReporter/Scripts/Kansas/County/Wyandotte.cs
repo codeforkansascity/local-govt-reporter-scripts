@@ -13,6 +13,8 @@ namespace LocalGovtReporter.Scripts.Kansas.County
     {
         public async Task RunScriptAsync()
         {
+            HelperMethods.MessageBuildingMeetingList("Wyandotte County, KS");
+
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();

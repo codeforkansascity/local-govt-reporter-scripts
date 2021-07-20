@@ -11,30 +11,36 @@ using System.Threading.Tasks;
 
 namespace LocalGovtReporter
 {
-    class Program
-    {
-        public static async Task Main()
-        {
-            IEnumerable<IScript> scripts =
-                Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(type => typeof(IScript).IsAssignableFrom(type))
-                    .Where(type =>
-                        !type.IsAbstract &&
-                        !type.IsGenericType &&
-                        type.GetConstructor(new Type[0]) != null)
-                    .Select(type => (IScript)Activator.CreateInstance(type))
-                    .ToList();
+	class Program
+	{
+		public static async Task Main()
+		{
+			IEnumerable<IScript> scripts =
+				Assembly.GetExecutingAssembly()
+					.GetTypes()
+					.Where(type => typeof(IScript).IsAssignableFrom(type))
+					.Where(type =>
+						!type.IsAbstract &&
+						!type.IsGenericType &&
+						type.GetConstructor(new Type[0]) != null)
+					.Select(type => (IScript)Activator.CreateInstance(type))
+					.ToList();
 
-            try
-            {
-                foreach (IScript script in scripts) //.Where(s => s.ToString().Contains("Mission")))
-                    await script.RunScriptAsync();
-            }
-            catch (Exception ex)
+			foreach (IScript script in scripts)//.Where(s => s.ToString().Contains("Overl")))
 			{
-                var z = ex.Message;
+				Console.WriteLine(script.ToString());
+				try
+				{
+					await script.RunScriptAsync();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("******************************");
+					Console.WriteLine($"Failed processing {script.ToString()}");
+					Console.WriteLine(ex.Message);
+					Console.WriteLine("******************************");
+				}
 			}
-        }
-    }
+		}
+	}
 }

@@ -12,6 +12,8 @@ namespace LocalGovtReporter.Scripts.Missouri.County
     {
         public async Task RunScriptAsync()
         {
+            HelperMethods.MessageBuildingMeetingList("Jackson County, MO");
+
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();

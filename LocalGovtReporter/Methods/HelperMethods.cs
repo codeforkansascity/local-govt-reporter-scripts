@@ -16,12 +16,18 @@ namespace LocalGovtReporter.Methods
 {
     public static class HelperMethods
     {
+        public static void MessageBuildingMeetingList(string agency)
+		{
+            System.Console.WriteLine($"Building meeting list for {agency}");
+        }
         public static void KCMOGetMeetings(IWebDriver driver, string rowSelector, List<Meeting> meetingsList)
         {
             ReadOnlyCollection<IWebElement> monthTables = driver.FindElements(By.CssSelector(".monthTable"));
-
+            int mmm = 0;
             foreach (var monthTable in monthTables)
             {
+                mmm++;
+                Console.WriteLine("Month table " + mmm + " of " + monthTables.Count);
                 var outputRows = monthTable.FindElements(By.CssSelector(rowSelector));
 
                 foreach (var outputRow in outputRows)

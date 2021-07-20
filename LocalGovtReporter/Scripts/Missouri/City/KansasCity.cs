@@ -12,6 +12,8 @@ namespace LocalGovtReporter.Scripts.Missouri.City
     {
         public async Task RunScriptAsync()
         {
+            HelperMethods.MessageBuildingMeetingList("Kansas City, KS");
+
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();

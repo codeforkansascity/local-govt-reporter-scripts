@@ -13,6 +13,8 @@ namespace LocalGovtReporter.Scripts.Kansas.City
     {
         public async Task RunScriptAsync()
         {
+            HelperMethods.MessageBuildingMeetingList("City of Overland Park");
+
             IWebDriver mainPageDriver = new ChromeDriver();
             IWebDriver subPageDriver = new ChromeDriver();
 
