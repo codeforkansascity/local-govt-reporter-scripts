@@ -38,3 +38,5 @@
 /LocalGovtReporter/obj/LocalGovtReporter.csproj.nuget.g.props
 /LocalGovtReporter/obj/LocalGovtReporter.csproj.nuget.dgspec.json
 /.vs/LocalGovtReporter/v16/.suo
+/LocalGovtReporter/bin/Release/netcoreapp3.1
+/LocalGovtReporter/obj/Release/netcoreapp3.1
