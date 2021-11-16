@@ -12,7 +12,7 @@ namespace LocalGovtReporter.Scripts.Missouri.City
     {
         public string AgencyName { get { return "Kansas City, MO"; } }
         public string SiteURL { get { return "https://clerk.kcmo.gov/Calendar.aspx"; } }
-        public async Task RunScriptAsync()
+        public async Task<int> RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
 
@@ -26,6 +26,7 @@ namespace LocalGovtReporter.Scripts.Missouri.City
             await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
+            return meetingsList.Count;
         }
     }
 }

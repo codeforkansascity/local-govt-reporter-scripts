@@ -13,7 +13,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
     {
         public string AgencyName { get { return "City of Overland Park"; } }
         public string SiteURL { get { return "https://opkansas.civicweb.net/Portal/MeetingTypeList.aspx"; } }
-        public async Task RunScriptAsync()
+        public async Task<int> RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
             IWebDriver subPageDriver = new ChromeDriver();
@@ -21,7 +21,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
             List<Meeting> meetingsList = new List<Meeting>();
 
             mainPageDriver.Navigate().GoToUrl(SiteURL);
-            Thread.Sleep(5000);
+            Thread.Sleep(30000);
 
             HelperMethods.OverlandParkGetMeetings(mainPageDriver, subPageDriver, ".upcoming-meeting-list", meetingsList);
             HelperMethods.OverlandParkGetMeetings(mainPageDriver, subPageDriver, ".recent-meeting-list", meetingsList);
@@ -31,6 +31,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
             mainPageDriver.Quit();
             subPageDriver.Quit();
+            return meetingsList.Count;
         }    
     }
 }

@@ -13,7 +13,7 @@ namespace LocalGovtReporter.Scripts.Kansas.County
         public string AgencyName { get { return "Johnson County, KS"; } }
         public string SiteURL { get { return "https://boccmeetings.jocogov.org/onbaseagendaonline"; } }
 
-        public async Task RunScriptAsync()
+        public async Task<int> RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
 
@@ -29,6 +29,7 @@ namespace LocalGovtReporter.Scripts.Kansas.County
             await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
+            return meetingsList.Count;
         }
     }
 }

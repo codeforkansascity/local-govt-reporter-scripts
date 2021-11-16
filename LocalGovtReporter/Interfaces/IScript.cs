@@ -6,6 +6,6 @@ namespace LocalGovtReporter.Interfaces
     {
         string AgencyName { get; }
         string SiteURL { get; }
-        Task RunScriptAsync();
+        Task<int> RunScriptAsync();
     }
 }

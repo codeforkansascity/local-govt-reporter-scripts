@@ -14,14 +14,14 @@ namespace LocalGovtReporter.Scripts.Kansas.County
         public string AgencyName { get { return "Wyandotte County, KS"; } }
         public string SiteURL { get { return "https://wycokck.civicclerk.com/web/home.aspx"; } }
 
-        public async Task RunScriptAsync()
+        public async Task<int> RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();
 
             mainPageDriver.Navigate().GoToUrl(SiteURL);
-            Thread.Sleep(5000);
+            Thread.Sleep(30000);
 
             HelperMethods.WyandotteCountyGetMeetings(mainPageDriver, "#aspxroundpanelCurrent", meetingsList);
             HelperMethods.WyandotteCountyGetMeetings(mainPageDriver, "#aspxroundpanelRecent2", meetingsList);
@@ -29,6 +29,7 @@ namespace LocalGovtReporter.Scripts.Kansas.County
             await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
+            return meetingsList.Count;
         }
     }
 }

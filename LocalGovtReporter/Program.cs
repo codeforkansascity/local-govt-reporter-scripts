@@ -32,16 +32,17 @@ namespace LocalGovtReporter
 				Console.WriteLine("Class name: " + script.ToString());
 				try
 				{
-					await script.RunScriptAsync();
+					Task<int> result;
+					result = script.RunScriptAsync();
+					await result;
+					Methods.HelperMethods.AddToSummaryMessage(script.AgencyName, result.Result);
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("******************************");
-					Console.WriteLine($"Failed processing {script.ToString()}");
-					Console.WriteLine(ex.Message);
-					Console.WriteLine("******************************");
+					Methods.HelperMethods.ErrorOnAgency(script.AgencyName, ex.Message);
 				}
 			}
+			Console.WriteLine(Methods.HelperMethods.SummaryMessage);
 		}
 	}
 }

@@ -24,6 +24,22 @@ namespace LocalGovtReporter.Methods
         {
             System.Console.WriteLine($"Adding {meetings} for {agency}");
         }
+        public static void AddToSummaryMessage(string agency, int meetings)
+        {
+            SummaryMessage += $"Added {meetings} for {agency}" + Environment.NewLine;
+            SummaryMessage += "******************************";
+        }
+        public static string SummaryMessage { get; set; }
+        public static void ErrorOnAgency(string agency, string msg)
+        {
+            SummaryMessage += $"Failed processing {agency}" + Environment.NewLine;
+            SummaryMessage += msg + Environment.NewLine;
+            SummaryMessage += "******************************";
+            Console.WriteLine("******************************");
+            Console.WriteLine($"Failed processing {agency}");
+            Console.WriteLine(msg);
+            Console.WriteLine("******************************");
+        }
         public static void KCMOGetMeetings(IWebDriver driver, string rowSelector, List<Meeting> meetingsList)
         {
             ReadOnlyCollection<IWebElement> monthTables = driver.FindElements(By.CssSelector(".rgMasterTable"));

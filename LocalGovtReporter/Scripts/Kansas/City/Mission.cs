@@ -21,7 +21,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
         public string SiteURL { get { return "https://www.missionks.org/agenda.aspx"; } }
         public string SiteURL2 { get { return "https://www.missionks.org/city-government/agendas-minutes/"; } }
 
-        public async Task RunScriptAsync()
+        public async Task<int> RunScriptAsync()
         {
             IWebDriver mainPageDriver = new ChromeDriver();
             IWebDriver subPageDriver = new ChromeDriver();
@@ -136,6 +136,7 @@ namespace LocalGovtReporter.Scripts.Kansas.City
 
             mainPageDriver.Quit();
             subPageDriver.Quit();
+            return meetingsList.Count;
         }
         public void ParseRSSdotnet()
         {
