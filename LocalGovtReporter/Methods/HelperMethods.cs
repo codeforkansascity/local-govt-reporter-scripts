@@ -20,6 +20,10 @@ namespace LocalGovtReporter.Methods
 		{
             System.Console.WriteLine($"Building meeting list for {agency}");
         }
+        public static void MessageAddingMeetingList(string agency, int meetings)
+        {
+            System.Console.WriteLine($"Adding {meetings} for {agency}");
+        }
         public static void KCMOGetMeetings(IWebDriver driver, string rowSelector, List<Meeting> meetingsList)
         {
             ReadOnlyCollection<IWebElement> monthTables = driver.FindElements(By.CssSelector(".monthTable"));

@@ -40,3 +40,8 @@
 /.vs/LocalGovtReporter/v16/.suo
 /LocalGovtReporter/bin/Release/netcoreapp3.1
 /LocalGovtReporter/obj/Release/netcoreapp3.1
+/.vs/LocalGovtReporter
+/LocalGovtReporter/bin
+/LocalGovtReporter/obj
+/LocalGovtReporter/Properties/PublishProfiles
+/LocalGovtReporter/dockerfile

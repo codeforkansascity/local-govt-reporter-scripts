@@ -10,20 +10,20 @@ namespace LocalGovtReporter.Scripts.Missouri.City
 {
     public class KansasCity : IScript
     {
+        public string AgencyName { get { return "Kansas City, MO"; } }
+        public string SiteURL { get { return "https://clerk.kcmo.gov/Calendar.aspx"; } }
         public async Task RunScriptAsync()
         {
-            HelperMethods.MessageBuildingMeetingList("Kansas City, KS");
-
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();
 
-            mainPageDriver.Navigate().GoToUrl("http://cityclerk.kcmo.org/liveweb/Meetings/HistoricalMeetings.aspx");
+            mainPageDriver.Navigate().GoToUrl(SiteURL);
 
             HelperMethods.KCMOGetMeetings(mainPageDriver, ".outputRow", meetingsList);
             HelperMethods.KCMOGetMeetings(mainPageDriver, ".altOutputRow", meetingsList);
             
-            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
         }

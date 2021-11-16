@@ -28,7 +28,8 @@ namespace LocalGovtReporter
 
 			foreach (IScript script in scripts)//.Where(s => s.ToString().Contains("Overl")))
 			{
-				Console.WriteLine(script.ToString());
+				Methods.HelperMethods.MessageBuildingMeetingList(script.AgencyName);
+				Console.WriteLine("Class name: " + script.ToString());
 				try
 				{
 					await script.RunScriptAsync();

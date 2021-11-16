@@ -35,8 +35,9 @@ namespace LocalGovtReporter.Methods
 
             return client;
         }
-        public static async Task AddMeetingsAsync(AmazonDynamoDBClient client, List<Meeting> meetings)
+        public static async Task AddMeetingsAsync(AmazonDynamoDBClient client, List<Meeting> meetings, string agency)
         {
+            Methods.HelperMethods.MessageAddingMeetingList(agency, meetings.Count);
             int count = 0;
             foreach (var meeting in meetings)
             {

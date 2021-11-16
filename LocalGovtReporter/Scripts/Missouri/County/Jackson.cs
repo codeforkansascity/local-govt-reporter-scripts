@@ -10,20 +10,20 @@ namespace LocalGovtReporter.Scripts.Missouri.County
 {
     class Jackson : IScript
     {
+        public string AgencyName { get { return "Jackson County, MO"; } }
+        public string SiteURL { get { return "https://jacksonco.legistar.com/Calendar.aspx"; } }
         public async Task RunScriptAsync()
         {
-            HelperMethods.MessageBuildingMeetingList("Jackson County, MO");
-
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();
 
-            mainPageDriver.Navigate().GoToUrl("https://jacksonco.legistar.com/Calendar.aspx");
+            mainPageDriver.Navigate().GoToUrl(SiteURL);
 
             HelperMethods.JacksonCountyGetMeetings(mainPageDriver, ".rgRow", meetingsList);
             HelperMethods.JacksonCountyGetMeetings(mainPageDriver, ".rgAltRow", meetingsList);
 
-            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
         }

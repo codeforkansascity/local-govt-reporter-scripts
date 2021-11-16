@@ -11,21 +11,22 @@ namespace LocalGovtReporter.Scripts.Kansas.County
 {
     public class Wyandotte : IScript
     {
+        public string AgencyName { get { return "Wyandotte County, KS"; } }
+        public string SiteURL { get { return "https://wycokck.civicclerk.com/web/home.aspx"; } }
+
         public async Task RunScriptAsync()
         {
-            HelperMethods.MessageBuildingMeetingList("Wyandotte County, KS");
-
             IWebDriver mainPageDriver = new ChromeDriver();
 
             List<Meeting> meetingsList = new List<Meeting>();
 
-            mainPageDriver.Navigate().GoToUrl("https://wycokck.civicclerk.com/web/home.aspx");
+            mainPageDriver.Navigate().GoToUrl(SiteURL);
             Thread.Sleep(5000);
 
             HelperMethods.WyandotteCountyGetMeetings(mainPageDriver, "#aspxroundpanelCurrent", meetingsList);
             HelperMethods.WyandotteCountyGetMeetings(mainPageDriver, "#aspxroundpanelRecent2", meetingsList);
 
-            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList);
+            await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 
             mainPageDriver.Quit();
         }
