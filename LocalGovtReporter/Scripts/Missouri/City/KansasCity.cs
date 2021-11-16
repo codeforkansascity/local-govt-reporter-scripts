@@ -21,7 +21,7 @@ namespace LocalGovtReporter.Scripts.Missouri.City
             mainPageDriver.Navigate().GoToUrl(SiteURL);
 
             HelperMethods.KCMOGetMeetings(mainPageDriver, ".outputRow", meetingsList);
-            HelperMethods.KCMOGetMeetings(mainPageDriver, ".altOutputRow", meetingsList);
+            //HelperMethods.KCMOGetMeetings(mainPageDriver, ".altOutputRow", meetingsList);
             
             await AWS.AddMeetingsAsync(AWS.GetAmazonDynamoDBClient(), meetingsList, AgencyName);
 

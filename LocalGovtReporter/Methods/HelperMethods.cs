@@ -26,67 +26,38 @@ namespace LocalGovtReporter.Methods
         }
         public static void KCMOGetMeetings(IWebDriver driver, string rowSelector, List<Meeting> meetingsList)
         {
-            ReadOnlyCollection<IWebElement> monthTables = driver.FindElements(By.CssSelector(".monthTable"));
+            ReadOnlyCollection<IWebElement> monthTables = driver.FindElements(By.CssSelector(".rgMasterTable"));
             int mmm = 0;
             foreach (var monthTable in monthTables)
             {
                 mmm++;
                 Console.WriteLine("Month table " + mmm + " of " + monthTables.Count);
-                var outputRows = monthTable.FindElements(By.CssSelector(rowSelector));
-
-                foreach (var outputRow in outputRows)
+                var outputRows = monthTable.FindElements(By.CssSelector(".rgRow"));
+                if (mmm == 2)
                 {
-                    string meetingDateRaw = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
-                    string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
-                    string meetingType = outputRow.FindElements(By.TagName("td"))[1].Text.Trim();
-                    string meetingSource = outputRow.FindElements(By.TagName("td"))[1].FindElement(By.TagName("a")).GetAttribute("href").Trim();
-                    string meetingTime = outputRow.FindElements(By.TagName("td"))[2].Text.Trim();
-                    string agendaURL = outputRow.FindElements(By.TagName("td"))[4].FindElement(By.TagName("a")).GetAttribute("href").Trim();
-                    string minutesURL = string.Empty;
-
-                    string meetingLocation = string.Empty;
-                    string meetingAddress = string.Empty;
-                    string latitude = string.Empty;
-                    string longitude = string.Empty;
-
-                    if (ContainsTag(outputRow.FindElements(By.TagName("td"))[5], "a"))
-                        minutesURL = outputRow.FindElements(By.TagName("td"))[5].FindElement(By.TagName("a")).GetAttribute("href").Trim();
-
-                    if (!string.IsNullOrEmpty(agendaURL))
+                    foreach (var outputRow in outputRows)
                     {
-                        try
-                        {
-                            var agendaText = ReadPdfFile(agendaURL);
+                        string meetingDateRaw = outputRow.FindElements(By.TagName("td"))[1].Text.Trim();
+                        string meetingDate = DateTime.ParseExact(meetingDateRaw, "M/d/yyyy", CultureInfo.CurrentCulture).ToString("yyyy-MM-dd");
+                        string meetingType = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
+                        string meetingSource = outputRow.FindElements(By.TagName("td"))[0].FindElement(By.TagName("a")).GetAttribute("href").Trim();
+                        string meetingTime = outputRow.FindElements(By.TagName("td"))[3].Text.Trim();
+                        string agendaURL = outputRow.FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).GetAttribute("href").Trim();
+                        string minutesURL = string.Empty; // outputRow.FindElements(By.TagName("td"))[8].FindElement(By.TagName("a")).GetAttribute("href").Trim(); ;
 
-                            if (agendaText.Contains("Zoom") || agendaText.Contains("ZOOM") || agendaText.Contains("zoom"))
-                            {
-                                meetingLocation = "Remote Meeting";
-                            }
-                            else if (agendaText.Contains("Teams") || agendaText.Contains("TEAMS") || agendaText.Contains("teams"))
-                            {
-                                meetingLocation = "Remote Meeting";
-                            }
-                            else if (agendaText.Contains("Google") || agendaText.Contains("GOOGLE"))
-                            {
-                                meetingLocation = "Remote Meeting";
-                            }
-                            else if (agendaText.Contains("Call-in") || agendaText.Contains("Conference"))
-                            {
-                                meetingLocation = "Conference Call";
-                            }
-                            else if (agendaText.Contains("Board of Police Commissioners Meeting"))
-                            {
-                                meetingLocation = "KCPD Headquarters, Community Room";
-                                meetingAddress = "1125 Locust St, Kansas City, MO 64106";
-                                latitude = "39.100558";
-                                longitude = "-94.577261";
-                            }
-                        }
-                        catch
+                        string meetingLocation = outputRow.FindElements(By.TagName("td"))[4].Text.Trim();
+                        string meetingAddress = string.Empty;
+                        string latitude = string.Empty;
+                        string longitude = string.Empty;
+
+                        if (ContainsTag(outputRow.FindElements(By.TagName("td"))[5], "a"))
+                            minutesURL = outputRow.FindElements(By.TagName("td"))[5].FindElement(By.TagName("a")).GetAttribute("href").Trim();
+
+                        if (!string.IsNullOrEmpty(agendaURL))
                         {
                             try
                             {
-                                var agendaText = ReadWordFile(agendaURL);
+                                var agendaText = ReadPdfFile(agendaURL);
 
                                 if (agendaText.Contains("Zoom") || agendaText.Contains("ZOOM") || agendaText.Contains("zoom"))
                                 {
@@ -96,15 +67,46 @@ namespace LocalGovtReporter.Methods
                                 {
                                     meetingLocation = "Remote Meeting";
                                 }
+                                else if (agendaText.Contains("Google") || agendaText.Contains("GOOGLE"))
+                                {
+                                    meetingLocation = "Remote Meeting";
+                                }
+                                else if (agendaText.Contains("Call-in") || agendaText.Contains("Conference"))
+                                {
+                                    meetingLocation = "Conference Call";
+                                }
+                                else if (agendaText.Contains("Board of Police Commissioners Meeting"))
+                                {
+                                    meetingLocation = "KCPD Headquarters, Community Room";
+                                    meetingAddress = "1125 Locust St, Kansas City, MO 64106";
+                                    latitude = "39.100558";
+                                    longitude = "-94.577261";
+                                }
                             }
                             catch
                             {
+                                try
+                                {
+                                    var agendaText = ReadWordFile(agendaURL);
 
+                                    if (agendaText.Contains("Zoom") || agendaText.Contains("ZOOM") || agendaText.Contains("zoom"))
+                                    {
+                                        meetingLocation = "Remote Meeting";
+                                    }
+                                    else if (agendaText.Contains("Teams") || agendaText.Contains("TEAMS") || agendaText.Contains("teams"))
+                                    {
+                                        meetingLocation = "Remote Meeting";
+                                    }
+                                }
+                                catch
+                                {
+
+                                }
                             }
                         }
-                    }
 
-                    AddMeeting(meetingsList, meetingSource, "KCMO", meetingType, meetingDate, meetingTime, meetingLocation, meetingAddress, latitude, longitude, "MO", "Jackson", agendaURL, minutesURL, null, null);
+                        AddMeeting(meetingsList, meetingSource, "KCMO", meetingType, meetingDate, meetingTime, meetingLocation, meetingAddress, latitude, longitude, "MO", "Jackson", agendaURL, minutesURL, null, null);
+                    }
                 }
             }
         }
