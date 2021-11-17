@@ -58,7 +58,9 @@ namespace LocalGovtReporter.Methods
                         string meetingType = outputRow.FindElements(By.TagName("td"))[0].Text.Trim();
                         string meetingSource = outputRow.FindElements(By.TagName("td"))[0].FindElement(By.TagName("a")).GetAttribute("href").Trim();
                         string meetingTime = outputRow.FindElements(By.TagName("td"))[3].Text.Trim();
-                        string agendaURL = outputRow.FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).GetAttribute("href").Trim();
+                        string agendaURL = outputRow.FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).GetAttribute("href");
+                        if (!string.IsNullOrWhiteSpace(agendaURL))
+                            agendaURL = agendaURL.Trim();
                         string minutesURL = string.Empty; // outputRow.FindElements(By.TagName("td"))[8].FindElement(By.TagName("a")).GetAttribute("href").Trim(); ;
 
                         string meetingLocation = outputRow.FindElements(By.TagName("td"))[4].Text.Trim();
@@ -67,8 +69,11 @@ namespace LocalGovtReporter.Methods
                         string longitude = string.Empty;
 
                         if (ContainsTag(outputRow.FindElements(By.TagName("td"))[5], "a"))
-                            minutesURL = outputRow.FindElements(By.TagName("td"))[5].FindElement(By.TagName("a")).GetAttribute("href").Trim();
-
+                        {
+                            minutesURL = outputRow.FindElements(By.TagName("td"))[5].FindElement(By.TagName("a")).GetAttribute("href");
+                            if (!string.IsNullOrWhiteSpace(minutesURL))
+                                minutesURL = minutesURL.Trim();
+                        }
                         if (!string.IsNullOrEmpty(agendaURL))
                         {
                             try
