@@ -3,7 +3,6 @@ using LocalGovtReporter.Methods;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;

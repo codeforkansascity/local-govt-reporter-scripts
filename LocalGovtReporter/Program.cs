@@ -1,13 +1,9 @@
-﻿using LocalGovtReporter.Interfaces;
-using LocalGovtReporter.Scripts.Kansas.City;
-using LocalGovtReporter.Scripts.Kansas.County;
-using LocalGovtReporter.Scripts.Missouri.City;
-using LocalGovtReporter.Scripts.Missouri.County;
-using System;
+﻿global using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LocalGovtReporter.Interfaces;
 
 namespace LocalGovtReporter
 {
@@ -15,6 +11,7 @@ namespace LocalGovtReporter
 	{
 		public static async Task Main()
 		{
+
 			IEnumerable<IScript> scripts =
 				Assembly.GetExecutingAssembly()
 					.GetTypes()
@@ -42,7 +39,15 @@ namespace LocalGovtReporter
 					Methods.HelperMethods.ErrorOnAgency(script.AgencyName, ex.Message);
 				}
 			}
-			Console.WriteLine(Methods.HelperMethods.SummaryMessage);
+			try
+			{
+				await Methods.HelperMethods.MessageSendSummaryMessage(Methods.HelperMethods.SummaryMessage);
+			}
+			catch (Exception ex)
+            {
+				Methods.HelperMethods.ErrorOnAgency("Error sending SQS", ex.Message);
+
+			}
 		}
 	}
 }

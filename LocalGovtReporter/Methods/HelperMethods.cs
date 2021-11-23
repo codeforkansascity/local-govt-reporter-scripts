@@ -3,7 +3,6 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using LocalGovtReporter.Models;
 using OpenQA.Selenium;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -11,11 +10,28 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LocalGovtReporter.Methods
 {
     public static class HelperMethods
     {
+        private static DateTime StartTime;
+        static HelperMethods()
+        {
+            StartTime = DateTime.Now;
+        }
+
+        public static string SQSURL = "https://sqs.us-east-2.amazonaws.com/266092293084/WebSiteScrapingTask";
+        public static async Task MessageSendSummaryMessage(string message)
+        {
+            message = "App started at: " + StartTime.ToLongDateString() + " " + StartTime.ToLongTimeString() + Environment.NewLine +  message;
+            message += "App ending at: " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + Environment.NewLine;
+            System.Console.WriteLine(message);
+            await AWS.SendMessage(SQSURL, message);
+        }
+        //git not working - maa code change
+
         public static void MessageBuildingMeetingList(string agency)
 		{
             System.Console.WriteLine($"Building meeting list for {agency}");
@@ -27,14 +43,14 @@ namespace LocalGovtReporter.Methods
         public static void AddToSummaryMessage(string agency, int meetings)
         {
             SummaryMessage += $"Added {meetings} for {agency}" + Environment.NewLine;
-            SummaryMessage += "******************************";
+            SummaryMessage += "******************************" + Environment.NewLine;
         }
         public static string SummaryMessage { get; set; }
         public static void ErrorOnAgency(string agency, string msg)
         {
-            SummaryMessage += $"Failed processing {agency}" + Environment.NewLine;
+            SummaryMessage += Environment.NewLine + $"Failed processing {agency}" + Environment.NewLine;
             SummaryMessage += msg + Environment.NewLine;
-            SummaryMessage += "******************************";
+            SummaryMessage += "******************************" + Environment.NewLine;
             Console.WriteLine("******************************");
             Console.WriteLine($"Failed processing {agency}");
             Console.WriteLine(msg);

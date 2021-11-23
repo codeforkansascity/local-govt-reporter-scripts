@@ -4,16 +4,29 @@ using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using LocalGovtReporter.Models;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Linq;
+using Amazon.SQS;
+using Amazon.SQS.Model;
 
 namespace LocalGovtReporter.Methods
 {
     public class AWS
     {
+        public static RegionEndpoint AppRegionEndpoint = RegionEndpoint.USEast2;
+        //https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/SendMessage.html
+        // Method to put a message on a queue
+        // Could be expanded to include message attributes, etc., in a SendMessageRequest
+        public static async Task SendMessage(string qUrl, string messageBody)
+        {
+            IAmazonSQS sqsClient = AWS.GetAmazonSQSClient();
+            SendMessageResponse responseSendMsg =
+              await sqsClient.SendMessageAsync(qUrl, messageBody);
+            Console.WriteLine($"Message added to queue\n  {qUrl}");
+            Console.WriteLine($"HttpStatusCode: {responseSendMsg.HttpStatusCode}");
+        }
         //public static AmazonDynamoDBClient GetAmazonDynamoDBClient()
         //{
         //    var credentials = new BasicAWSCredentials("accessKey", "secretKey");
@@ -28,9 +41,24 @@ namespace LocalGovtReporter.Methods
             var sharedFile = new SharedCredentialsFile();
             sharedFile.TryGetProfile("localgovt", out var profile);
             AWSCredentialsFactory.TryGetAWSCredentials(profile, sharedFile, out var credentials);
-            client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast2);
+            client = new AmazonDynamoDBClient(credentials, AppRegionEndpoint);
 #else
-                client = new AmazonDynamoDBClient(RegionEndpoint.USEast2);
+                client = new AmazonDynamoDBClient(AppRegionEndpoint);
+#endif
+
+            return client;
+        }
+        public static AmazonSQSClient GetAmazonSQSClient()
+        {
+            AmazonSQSClient client = null;
+
+#if DEBUG
+            var sharedFile = new SharedCredentialsFile();
+            sharedFile.TryGetProfile("localgovt", out var profile);
+            AWSCredentialsFactory.TryGetAWSCredentials(profile, sharedFile, out var credentials);
+            client = new AmazonSQSClient(credentials, AppRegionEndpoint);
+#else
+                client = new AmazonSQSClient(AppRegionEndpoint);
 #endif
 
             return client;
